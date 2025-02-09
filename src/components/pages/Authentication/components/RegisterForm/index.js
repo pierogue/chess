@@ -1,7 +1,6 @@
 import { List } from '../../../../common/List/index.js'
 import { Header } from '../Header/index.js'
 import { Input } from '../Input/index.js'
-import { Checkbox } from '../Checkbox/index.js'
 import { Label } from '../Label/index.js'
 import { Button } from '../Button/index.js'
 import { Clickable } from '../../../../atoms/Clickable/index.js'
@@ -16,20 +15,16 @@ export class RegisterForm extends Composite {
     const hideButton = new HideButton(() => {
       passwordInput.element.type = passwordInput.element.type === 'text' ? 'password' : 'text'
     })
-    const repeatHideButton = new HideButton(() => {
-      repeatPasswordInput.element.type = repeatPasswordInput.element.type === 'text' ? 'password' : 'text'
-    })
 
     let errorMessage = ''
     const errorLabel = new Raw('<p class="error-label"><p>')
 
-    let newsCheckboxState = false
-    let agreementCheckboxState = false
+    const newsCheckboxState = false
+    const agreementCheckboxState = false
 
     let usernameValid = false
     let emailValid = false
     let passwordValid = false
-    let repeatPasswordValid = false
 
     const usernameInput = new Input({
       placeholder: 'Имя пользователя',
@@ -74,33 +69,10 @@ export class RegisterForm extends Composite {
           passwordValid = true
           errorMessage = ''
         }
-        // Check if repeat password matches
-        if (repeatPasswordInput.element.value && text !== repeatPasswordInput.element.value) {
-          repeatPasswordValid = false
-          errorMessage = 'Пароли не совпадают.'
-        } else if (repeatPasswordInput.element.value) {
-          repeatPasswordValid = true
-        }
         errorLabel.element.textContent = errorMessage
       },
     })
     passwordInput.element.type = 'password'
-
-    const repeatPasswordInput = new Input({
-      placeholder: 'Повторите пароль',
-      rightDecorator: repeatHideButton,
-      onChanged: (text) => {
-        if (text !== passwordInput.element.value) {
-          repeatPasswordValid = false
-          errorMessage = 'Пароли не совпадают.'
-        } else {
-          repeatPasswordValid = true
-          errorMessage = ''
-        }
-        errorLabel.element.textContent = errorMessage
-      },
-    })
-    repeatPasswordInput.element.type = 'password'
 
     super(
       new Wrap(
@@ -149,68 +121,28 @@ export class RegisterForm extends Composite {
             }
           ),
           new Wrap(
-            new List(
-              repeatPasswordInput,
-              new Label('*')
-            ),
-            {
-              wrap: (container) => {
-                const element = document.createElement('div')
-                element.className = 'register-form-rep-password'
-                container.appendChild(element)
-                return element
-              },
-            }
-          ),
-          new Wrap(
-            new List(
-              new Checkbox({
-                onChanged: (checked) => {
-                  newsCheckboxState = checked
+            new Wrap(
+              new List(
+                new Label('Регистрируясь вы соглашаетесь с &nbsp'),
+                new Clickable(
+                  new Label('Пользовательским соглашением'),
+                  {
+                    onClick: async () => {
+                      if (options.onSwitchToAgreement) {
+                        await options.onSwitchToAgreement()
+                      }
+                    },
+                  }
+                )
+              ),
+              {
+                wrap: (container) => {
+                  const element = document.createElement('div')
+                  element.className = 'register-form-agreement-link'
+                  container.appendChild(element)
+                  return element
                 },
-              }),
-              new Label('Присылать мне новости и специальные предложения')
-            ),
-            {
-              wrap: (container) => {
-                const element = document.createElement('div')
-                element.className = 'register-form-news-check'
-                container.appendChild(element)
-                return element
-              },
-            }
-          ),
-          new Wrap(
-            new List(
-              new Checkbox({
-                onChanged: (checked) => {
-                  agreementCheckboxState = checked
-                },
-              }),
-              new Wrap(
-                new List(
-                  new Label('Я прочитал(-а) и принимаю&nbsp'),
-                  new Clickable(
-                    new Label('условия пользовательского соглашения'),
-                    {
-                      onClick: async () => {
-                        if (options.onSwitchToAgreement) {
-                          await options.onSwitchToAgreement()
-                        }
-                      },
-                    }
-                  )
-                ),
-                {
-                  wrap: (container) => {
-                    const element = document.createElement('div')
-                    element.className = 'register-form-agreement-link'
-                    container.appendChild(element)
-                    return element
-                  },
-                }
-              )
-
+              }
             ),
             {
               wrap: (container) => {
@@ -228,7 +160,7 @@ export class RegisterForm extends Composite {
             }),
             {
               onClick: async () => {
-                if (usernameValid && emailValid && passwordValid && repeatPasswordValid && agreementCheckboxState) {
+                if (usernameValid && emailValid && passwordValid && agreementCheckboxState) {
                   if (options.onRegister) {
                     const registerData = {
                       username: usernameInput.element.value,
@@ -240,10 +172,10 @@ export class RegisterForm extends Composite {
                     errorMessage = ''
                   }
                 } else {
-                  if (!usernameValid && !emailValid && !passwordValid && !repeatPasswordValid && !agreementCheckboxState) {
+                  if (!usernameValid && !emailValid && !passwordValid && !agreementCheckboxState) {
                     errorMessage = 'Заполните корректно все поля.'
                   }
-                  if (usernameValid && emailValid && passwordValid && repeatPasswordValid && !agreementCheckboxState) {
+                  if (usernameValid && emailValid && passwordValid && !agreementCheckboxState) {
                     errorMessage = 'Вы должны принять условия пользовательского соглашения.'
                   }
                   errorLabel.element.textContent = errorMessage

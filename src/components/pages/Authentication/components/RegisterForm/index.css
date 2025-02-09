@@ -26,7 +26,6 @@
 .register-form-name,
 .register-form-email,
 .register-form-password,
-.register-form-rep-password,
 .register-form-news-check,
 .register-form-agreement-check,
 .register-form-login {
@@ -77,8 +76,7 @@
 
 .register-form-name .pages-label:not(.pages-tip-text-wrapper .pages-label),
 .register-form-email .pages-label:not(.pages-tip-text-wrapper .pages-label),
-.register-form-password .pages-label:not(.pages-tip-text-wrapper .pages-label),
-.register-form-rep-password .pages-label:not(.pages-tip-text-wrapper .pages-label) {
+.register-form-password .pages-label:not(.pages-tip-text-wrapper .pages-label) {
   margin: 0;
   font-size: 1.5rem;
 }
