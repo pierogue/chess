@@ -94,6 +94,7 @@
   height: 1rem;
   margin: 0;
   font-family: "Open Sans", sans-serif;
-  color: #ff4b4b;
+  color: #ff3030;
   text-align: center;
+  text-shadow: 1px 0 2px black;
 }
