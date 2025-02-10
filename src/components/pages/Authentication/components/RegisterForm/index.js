@@ -14,6 +14,7 @@ import { Raw } from '../../../../atoms/Raw/index.js'
 export class RegisterForm extends Composite {
   constructor (options = {}) {
     const hideButton = new HideButton(() => {
+      hideButton.show = !hideButton.show
       passwordInput.element.type = passwordInput.element.type === 'text' ? 'password' : 'text'
     })
     const repeatHideButton = new HideButton(() => {
