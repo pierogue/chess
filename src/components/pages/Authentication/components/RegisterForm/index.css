@@ -8,6 +8,42 @@
   transform: translate(-50%, -50%);
 }
 
+@media (height <= 450px) {
+  .register-form {
+    transform: translate(-60%, -60%);
+
+    /* gap: 0.99rem;
+    margin-top: 10px; */
+    scale: 0.8;
+  }
+
+  .register-form-login {
+    margin-top: -20px;
+  }
+}
+
+@media (height <= 400px) {
+  .register-form {
+    transform: translate(-60%, -60%);
+    scale: 0.8;
+  }
+
+  .register-form-login {
+    margin-top: -20px;
+  }
+}
+
+@media (height <= 350px) {
+  .register-form {
+    transform: translate(-80%, -80%);
+    scale: 0.6;
+  }
+
+  .register-form-login {
+    margin-top: -20px;
+  }
+}
+
 .header {
   width: 100%;
   margin: auto;
@@ -87,6 +123,7 @@
   width: 23rem;
   height: 1rem;
   margin: 0;
+  margin-top: -5px;
   font-family: "Open Sans", sans-serif;
   color: #ff4b4b;
   text-align: center;
