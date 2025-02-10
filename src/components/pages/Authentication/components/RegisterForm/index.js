@@ -19,9 +19,6 @@ export class RegisterForm extends Composite {
     let errorMessage = ''
     const errorLabel = new Raw('<p class="error-label"><p>')
 
-    const newsCheckboxState = false
-    const agreementCheckboxState = false
-
     let usernameValid = false
     let emailValid = false
     let passwordValid = false
@@ -120,39 +117,39 @@ export class RegisterForm extends Composite {
               },
             }
           ),
+          // new Wrap(
           new Wrap(
-            new Wrap(
-              new List(
-                new Label('Регистрируясь вы соглашаетесь с &nbsp'),
-                new Clickable(
-                  new Label('Пользовательским соглашением'),
-                  {
-                    onClick: async () => {
-                      if (options.onSwitchToAgreement) {
-                        await options.onSwitchToAgreement()
-                      }
-                    },
-                  }
-                )
-              ),
-              {
-                wrap: (container) => {
-                  const element = document.createElement('div')
-                  element.className = 'register-form-agreement-link'
-                  container.appendChild(element)
-                  return element
-                },
-              }
+            new List(
+              new Label('Регистрируясь вы соглашаетесь с &nbsp'),
+              new Clickable(
+                new Label('Пользовательским соглашением'),
+                {
+                  onClick: async () => {
+                    if (options.onSwitchToAgreement) {
+                      await options.onSwitchToAgreement()
+                    }
+                  },
+                }
+              )
             ),
             {
               wrap: (container) => {
                 const element = document.createElement('div')
-                element.className = 'register-form-agreement-check'
+                element.className = 'register-form-agreement-link'
                 container.appendChild(element)
                 return element
               },
             }
           ),
+          //   {
+          //     wrap: (container) => {
+          //       const element = document.createElement('div')
+          //       element.className = 'register-form-agreement-check'
+          //       container.appendChild(element)
+          //       return element
+          //     },
+          //   }
+          // ),
           new Clickable(
             new Button({
               text: 'СОЗДАТЬ АККАУНТ',
@@ -160,22 +157,21 @@ export class RegisterForm extends Composite {
             }),
             {
               onClick: async () => {
-                if (usernameValid && emailValid && passwordValid && agreementCheckboxState) {
+                if (usernameValid && emailValid && passwordValid) {
                   if (options.onRegister) {
                     const registerData = {
                       username: usernameInput.element.value,
                       email: emailInput.element.value,
                       password: passwordInput.element.value,
-                      sendNews: newsCheckboxState,
                     }
                     await options.onRegister(registerData)
                     errorMessage = ''
                   }
                 } else {
-                  if (!usernameValid && !emailValid && !passwordValid && !agreementCheckboxState) {
+                  if (!usernameValid && !emailValid && !passwordValid) {
                     errorMessage = 'Заполните корректно все поля.'
                   }
-                  if (usernameValid && emailValid && passwordValid && !agreementCheckboxState) {
+                  if (usernameValid && emailValid && passwordValid) {
                     errorMessage = 'Вы должны принять условия пользовательского соглашения.'
                   }
                   errorLabel.element.textContent = errorMessage
