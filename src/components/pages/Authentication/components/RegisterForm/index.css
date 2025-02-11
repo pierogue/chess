@@ -94,7 +94,7 @@
   height: 1rem;
   margin: 0;
   font-family: "Open Sans", sans-serif;
-  color: #ff3030;
+  color: #f00;
   text-align: center;
-  text-shadow: 1px 0 2px black;
+  text-shadow: 4px 0 8px #fff, -4px 0 8px #fff, 0 4px 8px #fff, 0 -4px 8px #fff;
 }
